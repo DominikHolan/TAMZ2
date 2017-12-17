@@ -28,7 +28,6 @@ public class BrainTest extends View{
     MainActivity mainActivity;
     int lx = 10;
     int ly = 10;
-
     private boolean win = false;
 
 
@@ -147,6 +146,7 @@ public class BrainTest extends View{
         }
         pocet=0;
        int u=0;
+       boolean pravda = false;
         for(int v=0;v<pomoc;v++) {
             if (pole[v] == pole2[v])
                 u++;
@@ -154,11 +154,13 @@ public class BrainTest extends View{
                 Nula();
                 pocet=u+1;
                 kontrola();
-                for (int i = 0; i < 100; i++) {
-                System.out.println(level0[i]);
-                }
             }
         }
+        for(int i=0;i<pomoc;i++)
+            if(pole[i]!=pole2[i]&&pole2[i]!=-1)
+                pravda=true;
+        if(pravda)
+            konec();
         invalidate();
     }
 
@@ -189,15 +191,19 @@ public class BrainTest extends View{
         for(int k=0;k<pocet;k++)
         {   int i1 = r.nextInt(9 ) ;
             int i2 = r.nextInt(100 ) ;
+            for(int g=0;g<pocet;g++)
+            for(int j=0;j<pocet;j++)
+                if (i2 == pozice[j] && g != j)
+                    i2 = r.nextInt(100);
             level[i2]=i1;
             level2[i2]=11;
             pole[k]=i1;
             pozice[k]=i2;
+            pole2[k]=-1;
         }
 
     }
-    public void kontrola()
-    {
+    public void kontrola() {
         for(int k=0;k<pomoc;k++) {
            level2[pozice[k]]=10;
 
@@ -206,7 +212,6 @@ public class BrainTest extends View{
     public void pis(String x) {
         Toast.makeText(getContext(), x, Toast.LENGTH_SHORT).show();
     }
-
     public void gen(int j,int l)  {
      level[j]=l;
      level2[j]=l;
@@ -219,4 +224,20 @@ public class BrainTest extends View{
             pole2[i]=k;
 
     }
+
+    public void konec() {
+        AlertDialog.Builder a_builder = new AlertDialog.Builder(getContext());
+        a_builder.setMessage("Konec").setCancelable(false)
+                .setPositiveButton("Zavřít aplikaci", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.exit(0);
+                    }
+                });
+        AlertDialog alert = a_builder.create();
+        alert.setTitle("Špatně zadané čisla");
+        alert.show();
+
+    }
+
 }
