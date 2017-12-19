@@ -15,6 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,26 +30,9 @@ import java.util.Random;
 public class BrainTest extends View{
 
     Bitmap[] bmp;
-    MainActivity mainActivity;
     int lx = 10;
     int ly = 10;
-    private boolean win = false;
-
-
-    private final int nula = 0;
-    private final int jedna = 1;
-    private final int dva = 2;
-    private final int tri = 3;
-    private final int ctyri = 4;
-    private final int pet = 5;
-    private final int sest = 6;
-    private final int sedm = 7;
-    private final int osm = 8;
-    private final int devet = 9;
-    private final int back = 10;
-    private final int back1 = 11;
-
-
+    int number =0,top;
     private int currentLevel = 0;
     int width;
     int height;
@@ -154,8 +142,9 @@ public class BrainTest extends View{
                 Nula();
                 pocet=u+1;
                 kontrola();
-            }
-        }
+                number++;
+
+        }}
         for(int i=0;i<pomoc;i++)
             if(pole[i]!=pole2[i]&&pole2[i]!=-1)
                 pravda=true;
@@ -225,17 +214,28 @@ public class BrainTest extends View{
 
     }
 
+
     public void konec() {
         AlertDialog.Builder a_builder = new AlertDialog.Builder(getContext());
-        a_builder.setMessage("Konec").setCancelable(false)
+        if(top<number){
+            a_builder.setMessage("Topscore: "+number+"\nScore: "+number).setCancelable(false)
+                    .setPositiveButton("Zavřít aplikaci", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            System.exit(0);
+                        }
+                    });
+
+        }else{
+        a_builder.setMessage("Topscore: "+top+"\nScore: "+number).setCancelable(false)
                 .setPositiveButton("Zavřít aplikaci", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.exit(0);
-                    }
-                });
+                        System.exit(0);}
+
+                });}
         AlertDialog alert = a_builder.create();
-        alert.setTitle("Špatně zadané čisla");
+        alert.setTitle("Špatně zadané čislo");
         alert.show();
 
     }
